@@ -1,6 +1,8 @@
 package com.aftersales.aftersalestools.dto.customer;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 

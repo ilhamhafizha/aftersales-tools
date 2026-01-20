@@ -10,6 +10,8 @@ import com.aftersales.aftersalestools.repository.CustomerRepository;
 import com.aftersales.aftersalestools.repository.LocationRepository;
 import com.aftersales.aftersalestools.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,10 +38,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerResponse> findAll() {
-        return customerRepository.findAll()
-                .stream()
-                .map(CustomerMapper::toResponse)
-                .toList();
+    public Page<CustomerResponse> findAll(Pageable pageable) {
+        return customerRepository.findAll(pageable)
+                .map(CustomerMapper::toResponse);
     }
+
+
 }
