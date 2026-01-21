@@ -1,6 +1,7 @@
 package com.aftersales.aftersalestools.controller;
 
 
+import com.aftersales.aftersalestools.dto.ticket.TicketDetailResponse;
 import com.aftersales.aftersalestools.dto.ticket.TicketRequest;
 import com.aftersales.aftersalestools.dto.ticket.TicketResponse;
 import com.aftersales.aftersalestools.dto.ticket.TicketStatusUpdateRequest;
@@ -35,5 +36,11 @@ public class TicketController {
     ) {
         return ticketService.updateStatus(id, request);
     }
+
+    @GetMapping("/{id}")
+    public TicketDetailResponse findDetail(@PathVariable Long id) {
+        return ticketService.findDetail(id);
+    }
+
 
 }

@@ -1,9 +1,11 @@
 package com.aftersales.aftersalestools.mapper;
 
+import com.aftersales.aftersalestools.dto.ticket.TicketHistoryResponse;
 import com.aftersales.aftersalestools.dto.ticket.TicketResponse;
 
 import com.aftersales.aftersalestools.entity.Vehicle;
 import com.aftersales.aftersalestools.entity.ticket.Ticket;
+import com.aftersales.aftersalestools.entity.ticket.TicketHistory;
 
 public class TicketMapper {
 
@@ -37,4 +39,17 @@ public class TicketMapper {
 
         return res;
     }
+
+    public static TicketHistoryResponse toHistoryResponse(
+            TicketHistory history) {
+
+        TicketHistoryResponse res = new TicketHistoryResponse();
+        res.setFromStatus(history.getFromStatus().name());
+        res.setToStatus(history.getToStatus().name());
+        res.setNote(history.getNote());
+        res.setChangedBy(history.getChangedBy());
+        res.setChangedAt(history.getChangedAt());
+        return res;
+    }
+
 }

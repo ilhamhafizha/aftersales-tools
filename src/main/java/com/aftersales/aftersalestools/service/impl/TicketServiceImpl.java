@@ -1,8 +1,6 @@
 package com.aftersales.aftersalestools.service.impl;
 
-import com.aftersales.aftersalestools.dto.ticket.TicketRequest;
-import com.aftersales.aftersalestools.dto.ticket.TicketResponse;
-import com.aftersales.aftersalestools.dto.ticket.TicketStatusUpdateRequest;
+import com.aftersales.aftersalestools.dto.ticket.*;
 import com.aftersales.aftersalestools.entity.Vehicle;
 import com.aftersales.aftersalestools.entity.ticket.Ticket;
 import com.aftersales.aftersalestools.entity.ticket.TicketHistory;
@@ -93,4 +91,26 @@ public class TicketServiceImpl implements TicketService {
             throw new IllegalStateException("RESOLVED hanya bisa ke CLOSED");
         }
     }
+
+
+    @Override
+    public TicketDetailResponse findDetail(Long ticketId) {
+
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+
+        List<TicketHistoryResponse> histories =
+                ticketHistoryRepository
+                        .findByTicketIdOrderByChangedAtAsc(ticketId)
+                        .stream()
+                        .map(TicketMapper::toHistoryResponse)
+                        .toList();
+
+        TicketDetailResponse res = new TicketDetailResponse();
+        res.setTicket(TicketMapper.toResponse(ticket));
+        res.setHistories(histories);
+
+        return res;
+    }
+
 }
