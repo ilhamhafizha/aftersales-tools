@@ -55,4 +55,7 @@ public class Ticket {
     void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TicketAttachment> attachments = new ArrayList<>();
+
 }
