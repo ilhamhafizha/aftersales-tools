@@ -63,9 +63,13 @@ public class Ticket {
     @JoinColumn(name = "technician_id")
     private Technician technician;
 
-    // SLA
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TicketSlaStatus slaStatus = TicketSlaStatus.ON_TIME;
+
     private LocalDateTime slaStartAt;
     private LocalDateTime slaDueAt;
     private LocalDateTime slaResolvedAt;
+
 
 }
