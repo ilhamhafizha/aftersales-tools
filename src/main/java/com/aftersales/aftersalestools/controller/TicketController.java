@@ -1,10 +1,7 @@
 package com.aftersales.aftersalestools.controller;
 
 
-import com.aftersales.aftersalestools.dto.ticket.TicketDetailResponse;
-import com.aftersales.aftersalestools.dto.ticket.TicketRequest;
-import com.aftersales.aftersalestools.dto.ticket.TicketResponse;
-import com.aftersales.aftersalestools.dto.ticket.TicketStatusUpdateRequest;
+import com.aftersales.aftersalestools.dto.ticket.*;
 import com.aftersales.aftersalestools.service.TicketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +37,13 @@ public class TicketController {
     @GetMapping("/{id}")
     public TicketDetailResponse findDetail(@PathVariable Long id) {
         return ticketService.findDetail(id);
+    }
+
+    @PatchMapping("/{ticketId}/assign")
+    public TicketResponse assign(
+            @PathVariable Long ticketId,
+            @RequestBody TicketAssignRequest request) {
+        return ticketService.assignTechnician(ticketId, request);
     }
 
 

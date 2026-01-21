@@ -30,4 +30,14 @@ public class TicketResponse {
     private Integer odometer;
 
     private LocalDateTime createdAt;
+
+    // Technician
+    private Long technicianId;
+    private String technicianName;
+
+    // SLA
+    private LocalDateTime slaStartAt;
+    private LocalDateTime slaDueAt;
+    private LocalDateTime slaResolvedAt;
+
 }

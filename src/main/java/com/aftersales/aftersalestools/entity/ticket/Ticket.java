@@ -1,5 +1,6 @@
 package com.aftersales.aftersalestools.entity.ticket;
 
+import com.aftersales.aftersalestools.entity.Technician;
 import com.aftersales.aftersalestools.entity.Vehicle;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -57,5 +58,14 @@ public class Ticket {
     }
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TicketAttachment> attachments = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "technician_id")
+    private Technician technician;
+
+    // SLA
+    private LocalDateTime slaStartAt;
+    private LocalDateTime slaDueAt;
+    private LocalDateTime slaResolvedAt;
 
 }

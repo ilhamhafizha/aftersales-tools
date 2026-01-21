@@ -2,7 +2,6 @@ package com.aftersales.aftersalestools.mapper;
 
 import com.aftersales.aftersalestools.dto.ticket.TicketHistoryResponse;
 import com.aftersales.aftersalestools.dto.ticket.TicketResponse;
-
 import com.aftersales.aftersalestools.entity.Vehicle;
 import com.aftersales.aftersalestools.entity.ticket.Ticket;
 import com.aftersales.aftersalestools.entity.ticket.TicketHistory;
@@ -10,8 +9,10 @@ import com.aftersales.aftersalestools.entity.ticket.TicketHistory;
 public class TicketMapper {
 
     public static TicketResponse toResponse(Ticket ticket) {
+
         TicketResponse res = new TicketResponse();
 
+        // 🔹 Ticket
         res.setId(ticket.getId());
         res.setCategory(ticket.getCategory());
         res.setStatus(ticket.getStatus().name());
@@ -21,9 +22,8 @@ public class TicketMapper {
         res.setOdometer(ticket.getOdometer());
         res.setCreatedAt(ticket.getCreatedAt());
 
-        Vehicle vehicle = ticket.getVehicle();
-
         // 🔹 Vehicle
+        Vehicle vehicle = ticket.getVehicle();
         res.setVehicleId(vehicle.getId());
         res.setPlateNumber(vehicle.getPlateNumber());
         res.setBrand(vehicle.getBrand());
@@ -37,6 +37,17 @@ public class TicketMapper {
                         .getName()
         );
 
+        // 🔹 Technician (OPTIONAL)
+        if (ticket.getTechnician() != null) {
+            res.setTechnicianId(ticket.getTechnician().getId());
+            res.setTechnicianName(ticket.getTechnician().getName());
+        }
+
+        // 🔹 SLA
+        res.setSlaStartAt(ticket.getSlaStartAt());
+        res.setSlaDueAt(ticket.getSlaDueAt());
+        res.setSlaResolvedAt(ticket.getSlaResolvedAt());
+
         return res;
     }
 
@@ -49,7 +60,7 @@ public class TicketMapper {
         res.setNote(history.getNote());
         res.setChangedBy(history.getChangedBy());
         res.setChangedAt(history.getChangedAt());
+
         return res;
     }
-
 }

@@ -1,12 +1,14 @@
 package com.aftersales.aftersalestools.service.impl;
 
 import com.aftersales.aftersalestools.dto.ticket.*;
+import com.aftersales.aftersalestools.entity.Technician;
 import com.aftersales.aftersalestools.entity.Vehicle;
 import com.aftersales.aftersalestools.entity.ticket.Ticket;
 import com.aftersales.aftersalestools.entity.ticket.TicketHistory;
 import com.aftersales.aftersalestools.entity.ticket.TicketStatus;
 import com.aftersales.aftersalestools.exception.ResourceNotFoundException;
 import com.aftersales.aftersalestools.mapper.TicketMapper;
+import com.aftersales.aftersalestools.repository.TechnicianRepository;
 import com.aftersales.aftersalestools.repository.TicketHistoryRepository;
 import com.aftersales.aftersalestools.repository.TicketRepository;
 import com.aftersales.aftersalestools.repository.VehicleRepository;
@@ -15,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,6 +27,7 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final VehicleRepository vehicleRepository;
     private final TicketHistoryRepository ticketHistoryRepository;
+    private final TechnicianRepository technicianRepository;
 
     @Override
     public TicketResponse create(TicketRequest request) {
@@ -112,5 +116,28 @@ public class TicketServiceImpl implements TicketService {
 
         return res;
     }
+
+    @Override
+    @Transactional
+    public TicketResponse assignTechnician(
+            Long ticketId,
+            TicketAssignRequest request) {
+
+        Ticket ticket = ticketRepository.findById(ticketId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
+
+        Technician technician = technicianRepository.findById(request.getTechnicianId())
+                .orElseThrow(() -> new ResourceNotFoundException("Technician not found"));
+
+        ticket.setTechnician(technician);
+        ticket.setSlaStartAt(LocalDateTime.now());
+        ticket.setSlaDueAt(request.getSlaDueAt());
+
+        // otomatis pindah status
+        ticket.setStatus(TicketStatus.IN_PROGRESS);
+
+        return TicketMapper.toResponse(ticket);
+    }
+
 
 }
